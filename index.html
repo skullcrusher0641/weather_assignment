@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 
+<input type="text" id="cityName"  >
+<button onclick="getTemp()" id="myBtn">click</button>
+<h1 id="main">  </h1>
+
+
+ -->
+<div class="main-box">
+<div>
+<div><h1 style="font-size: 50px; font-family:sans-serif;  color: white; "  >Weather forecasts <br> for thousands of locations <br> around the world</h1></div>
+<div><input id="cityName" type="text" id="cityName" placeholder="Search for a place ..." style="width: 500px;padding:15px 10px 15px 10px  ; border-radius: 20px;"> <button id="myBtn" style="visibility: hidden;" onclick="getTemp() ">click</button></div>
+<button onclick="getTemp()" id="myBtn" style="display: none;">click</button>
+</div>
+<div class="main-temp">
+<div class="temp-info" >
+    <img style="width: 150px; position: relative; right: 30px;" id="weather-icon" src="https://cdn.weatherapi.com/weather/64x64/day/113.png" alt="" >
+<h2 style="color: white; font-size: 40px; font-family:sans-serif;  font-weight: 400; height: 100px; position: relative; top: 10px;"  ><span id="cityChng">Karachi</span> <div style="color: white;   font-weight: 400; font-family:sans-serif; font-size: 20px;" id="weatherText">Party Cloudy </div></h2>
+<h2 style="font-weight: 400; font-family:sans-serif; font-size: 50px; margin-left: 35px; color: white; " id="temp-c" >10°C</h2>
+</div>
+<div class="sub-info">
+<h2 style="font-family:sans-serif; color: white; font-size: 15px;" >Feels Like <div id="feels">38.4°C</div></h2>
+<h2 style="font-family:sans-serif; color: white; font-size: 15px;">Humidity <div id="humidity">66%</div></h2>
+<h2 style="font-family:sans-serif; color: white; font-size: 15px;">Wind Speed <div id="wind">13.3Km/h </div></h2>
+<h2 style="font-family:sans-serif; color: white; font-size: 15px;">Dew Point <div id="dew">21.5°C</div></h2>
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+    <script>
+
+
+let input = document.getElementById("cityName");
+input.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("myBtn").click();
+  }
+});
+
+
+
+
+let prnt = document.getElementById("temp-c");
+let weatherIcon = document.getElementById("weather-icon");
+let city = document.getElementById("cityChng")
+let textCheck = document.getElementById("weatherText")
+ let feelsCheck = document.getElementById("feels")
+ let humidityCheck = document.getElementById("humidity") 
+ let windCheck = document.getElementById("wind")
+ let dewCheck = document.getElementById("dew")
+
+ function getTemp(){
+    axios.get(`https://api.weatherapi.com/v1/current.json?key=d347dfb1a00b4f86add45435242510&q= ${input.value}`)
+        .then(function(response){
+        
+           let temp = response.data.current.temp_c
+          let icon = response.data.current.condition.icon
+          let cityChange = response.data.location.name
+          let textChange = response.data.current.condition.text
+          let feelsChange = response.data.current.feelslike_c
+          let windChange = response.data.current.wind_kph
+          let dewsChange = response.data.current.dewpoint_c
+          let humidityChange = response.data.current.humidity
+
+
+
+          city.innerHTML = cityChange
+            prnt.innerHTML = `${temp}°C`
+weatherIcon.src = `https://${icon}`
+textCheck.innerHTML = textChange
+feelsCheck.innerHTML = `${feelsChange}°C` 
+ windCheck.innerHTML = `${windChange}km/h` 
+ humidityCheck.innerHTML =`${humidityChange}% `
+ dewCheck.innerHTML = `${dewsChange}%` 
+
+
+input.value= ""
+
+         }).catch(function(err){
+    
+         })
+
+  }
+
+  axios.get(`https://api.weatherapi.com/v1/current.json?key=d347dfb1a00b4f86add45435242510&q= karachi`)
+        .then(function(response){
+          let temp = response.data.current.temp_c
+          let icon = response.data.current.condition.icon
+          let cityChange = response.data.location.name
+          let textChange = response.data.current.condition.text
+          let feelsChange = response.data.current.feelslike_c
+          let windChange = response.data.current.wind_kph
+          let dewsChange = response.data.current.dewpoint_c
+          let humidityChange = response.data.current.humidity
+
+
+
+          city.innerHTML = cityChange
+            prnt.innerHTML = `${temp}°C`
+weatherIcon.src = `https://${icon}`
+textCheck.innerHTML = `${textChange}`
+ feelsCheck.innerHTML = `${feelsChange}°C` 
+ windCheck.innerHTML = `${windChange}km/h` 
+ humidityCheck.innerHTML =`${humidityChange}% `
+ dewCheck.innerHTML = `${dewsChange}%` 
+
+   
+       
+console.log(response.data)
+
+
+         }).catch(function(err){
+    
+         })
+   
+ 
+
+    </script>
+</body>
+</html>
